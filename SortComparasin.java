@@ -136,21 +136,67 @@
      * @param a: An unsorted array of doubles.
      * @return after the method returns, the array must be in ascending sorted order.
      */
-    static double[] mergeSortRecursive (double a[]) {
-    	
-
-	
-   }//end mergeSortRecursive
+    static double[] mergeSortRecursive (double a[]) 
+    {
+    	int start = 0, end = a.length;
+    	sortInMergeRecur(a, start, end);
+    	return a;
+   }	//end mergeSortRecursive
     	
     static void sortInMergeRecur(double array[], int startIndex, int endIndex) 
     { 
-        if (startIndex < endIndex) 
+        if (startIndex < endIndex) //stop recursion if there's 1 element
         { 
             int midIndex = (startIndex+endIndex)/2; 
             sortInMergeRecur(array, startIndex, midIndex); 
             sortInMergeRecur(array , midIndex+1, endIndex); 
 
             mergeInRecur(array, startIndex, midIndex, endIndex); 
+        } 
+    } 
+
+    static void mergeInRecur(double array[ ], int startIndex, int midIndex, int endIndex) 
+    { 
+        int NLeft = midIndex - startIndex + 1; 
+        int NRight = endIndex - midIndex; 
+        double L[ ] = new double [NLeft]; 
+        double R[ ] = new double [NRight]; 
+
+        for (int i=0; i<NLeft; ++i) 
+        	L[ i ] = array[ startIndex + i ] ;
+        for (int j=0; j<NRight; ++j) 
+        	R[ j ] = array[ midIndex + 1+ j ] ; 
+
+        
+        int i = 0, j = 0, k = startIndex; 
+        
+        //sort the 2 arrays into 1
+        while (i < NLeft && j < NRight) 
+        { 
+            if (L[i] <= R[j]) 
+            { 
+                array[k] = L[i]; 
+                i++; 
+                k++; 
+            } else
+            { 
+                array[k] = R[j]; 
+                j++; 
+                k++; 
+            } 
+        } 
+  
+        while (i < NLeft) //empty left array
+        { 
+            array[k] = L[i]; 
+            i++; 
+            k++; 
+        } 
+        while (j < NRight) //empty right array
+        { 
+            array[k] = R[j]; 
+            j++; 
+            k++; 
         } 
     } 
 
