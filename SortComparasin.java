@@ -121,10 +121,11 @@
      */
 
     static double[] mergeSortIterative (double a[]) {
-
-		 //todo: implement the sort
+    	
 	
     }//end mergesortIterative
+    
+    
     
     
     
@@ -138,11 +139,20 @@
     static double[] mergeSortRecursive (double a[]) {
     	
 
-    	//todo: implement the sort
 	
    }//end mergeSortRecursive
     	
-    
+    static void sortInMergeRecur(double array[], int startIndex, int endIndex) 
+    { 
+        if (startIndex < endIndex) 
+        { 
+            int midIndex = (startIndex+endIndex)/2; 
+            sortInMergeRecur(array, startIndex, midIndex); 
+            sortInMergeRecur(array , midIndex+1, endIndex); 
+
+            mergeInRecur(array, startIndex, midIndex, endIndex); 
+        } 
+    } 
 
 
    
