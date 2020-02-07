@@ -121,12 +121,13 @@
      */
 
     static double[] mergeSortIterative (double a[]) {
-    	
-	
+    	int N = a.length;
+    	for (int i = 1; i < N; i = i + i) 
+    	{
+    		for (int j = 0; j < N-i; j = i + i) merge(a, j, j+i-1, Math.min( j + i + i-1, N-1));
+		}
+	return a;
     }//end mergesortIterative
-    
-    
-    
     
     
     /**
@@ -142,7 +143,6 @@
     	sortInMergeRecur(a, start, end);
     	return a;
    }	//end mergeSortRecursive
-    	
     static void sortInMergeRecur(double array[], int startIndex, int endIndex) 
     { 
         if (startIndex < endIndex) //stop recursion if there's 1 element
@@ -151,11 +151,10 @@
             sortInMergeRecur(array, startIndex, midIndex); 
             sortInMergeRecur(array , midIndex+1, endIndex); 
 
-            mergeInRecur(array, startIndex, midIndex, endIndex); 
+            merge(array, startIndex, midIndex, endIndex); 
         } 
     } 
-
-    static void mergeInRecur(double array[ ], int startIndex, int midIndex, int endIndex) 
+    static void merge(double array[ ], int startIndex, int midIndex, int endIndex) 
     { 
         int NLeft = midIndex - startIndex + 1; 
         int NRight = endIndex - midIndex; 
