@@ -72,7 +72,6 @@
     	sortInQuick(a, startIndex, endIndex) ;
     	return a;
     }//end quick sort
-
     static int partition(double a[ ], int startIndex, int endIndex) 
     { 
         double pivot = a[endIndex];
@@ -93,7 +92,6 @@
   
         return i+1; 
     } 
-    
     static void sortInQuick(double array[], int startIndex, int endIndex) 
     { 
         if (startIndex < endIndex) 
@@ -120,15 +118,31 @@
      * @return after the method returns, the array must be in ascending sorted order.
      */
 
-    static double[] mergeSortIterative (double a[]) {
+    static double[] mergeSortIterative (double a[]) 
+    {
     	int N = a.length;
-    	for (int i = 1; i < N; i = i + i) 
+    	double aux[ ] = new double[N];
+    	
+    	for (int size = 1; size < N; size = size + size) 
     	{
-    		for (int j = 0; j < N-i; j = i + i) merge(a, j, j+i-1, Math.min( j + i + i-1, N-1));
+    		for (int lo = 0; lo < N-size; lo += size + size) 
+    		{
+    			merge(a, aux, lo, lo+size-1, Math.min(lo+size+size-1, N-1));
+    		}
+    	}
+    	return a;
+    }	//end merge sort Iterative
+    static void merge(double array[ ], double aux[], int startIndex, int midIndex, int endIndex) 
+    { 
+	    int i = startIndex, j = midIndex + 1;
+	    for (int k = startIndex; k  <= endIndex;  k++) 
+	    {
+			if			(i > midIndex) 				aux[k] = array[ j++ ];
+			else if	(j > endIndex) 				aux[k] = array[ i++ ];
+			else if	(array[j] < array[i]) 		aux[k] = array[ j++ ];
+			else 							 				aux[k] = array[ i++ ];
 		}
-	return a;
-    }//end mergesortIterative
-    
+    }
     
     /**
      * Sorts an array of doubles using recursive implementation of Merge Sort.
@@ -151,10 +165,10 @@
             sortInMergeRecur(array, startIndex, midIndex); 
             sortInMergeRecur(array , midIndex+1, endIndex); 
 
-            merge(array, startIndex, midIndex, endIndex); 
+            oldMerge(array, startIndex, midIndex, endIndex); 
         } 
     } 
-    static void merge(double array[ ], int startIndex, int midIndex, int endIndex) 
+    static void oldMerge(double array[ ], int startIndex, int midIndex, int endIndex) 
     { 
         int NLeft = midIndex - startIndex + 1; 
         int NRight = endIndex - midIndex; 
@@ -199,13 +213,66 @@
         } 
     } 
 
+//---- My Methods ----------------------------------------------------------------------------------------
+    public static void printArray(double a[])
+    {
+    	for (int i = 0; i < a.length; i++) System.out.print(a[i]+ ", ");
+    	System.out.print( "\n");
+    }
+    
+    public static void testInsert()
+    {
+    	System.out.print( "InsertionSort \n");
+    	double a[] = {6,5,4,7,2,1,3};
+        printArray(a);
+        double aSort[] = insertionSort(a);
+        printArray(aSort);
+        System.out.print( "\n");
+    }
+    public static void testSelection()
+    {
+    	System.out.print( "SelectionSort \n");
+    	double a[] = {6,5,4,7,2,1,3};
+        printArray(a);
+        double aSort[] = selectionSort(a);
+        printArray(aSort);
+        System.out.print( "\n");
+    }
+    public static void testQuick()
+    {
+    	System.out.print( "QuickSort \n");
+    	double a[] = {6,5,4,7,2,1,3};
+        printArray(a);
+        double aSort[] = quickSort(a);
+        printArray(aSort);
+        System.out.print( "\n");
+    }
+    public static void testMergeIter()
+    {
+    	System.out.print( "MergeSort Iterative \n");
+    	double a[] = {6,5,4,7,2,1,3};
+        printArray(a);
+        double aSort[] = mergeSortIterative(a);
+        printArray(aSort);
+        System.out.print( "\n");
+    }
+    public static void testMergeRecur()
+    {
+    	System.out.print( "MergeSort Recursive \n");
+    	double a[] = {6,5,4,7,2,1,3};
+        printArray(a);
+        double aSort[] = mergeSortRecursive(a);
+        printArray(aSort);
+        System.out.print( "\n");
+    }
 
-   
-
-
-    public static void main(String[] args) {
-
-        //todo: do experiments as per assignment instructions
+    public static void main(String[] args) 
+    {
+    	testInsert();
+    	testSelection();
+    	testQuick();
+    	testMergeIter();
+    	//testMergeRecur();
     }
 
  }//end class
