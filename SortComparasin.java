@@ -127,23 +127,12 @@
     	{
     		for (int lo = 0; lo < N-size; lo += size + size) 
     		{
-    			merge(a, aux, lo, lo+size-1, Math.min(lo+size+size-1, N-1));
+    			
+    			merge(a, aux, lo, lo+size-1, Math.min(lo + size + size - 1,  N-1));
     		}
     	}
     	return a;
     }	//end merge sort Iterative
-    static void merge(double array[ ], double aux[], int startIndex, int midIndex, int endIndex) 
-    { 
-	    int i = startIndex, j = midIndex + 1;
-	    for (int k = startIndex; k  <= endIndex;  k++) 
-	    {
-			if			(i > midIndex) 				aux[k] = array[ j++ ];
-			else if	(j > endIndex) 				aux[k] = array[ i++ ];
-			else if	(array[j] < array[i]) 		aux[k] = array[ j++ ];
-			else 							 				aux[k] = array[ i++ ];
-		}
-    }
-    
     /**
      * Sorts an array of doubles using recursive implementation of Merge Sort.
      * This method is static, thus it can be called as SortComparison.sort(a)
@@ -153,66 +142,34 @@
      */
     static double[] mergeSortRecursive (double a[]) 
     {
-    	int start = 0, end = a.length;
-    	sortInMergeRecur(a, start, end);
+    	double aux[] = new double[a.length];
+    	sort(a, aux, 0, a.length-1) ;
     	return a;
    }	//end mergeSortRecursive
-    static void sortInMergeRecur(double array[], int startIndex, int endIndex) 
+ 
+    
+    static void merge(double array[ ], double aux[], int startIndex, int midIndex, int endIndex) 
     { 
-        if (startIndex < endIndex) //stop recursion if there's 1 element
-        { 
-            int midIndex = (startIndex+endIndex)/2; 
-            sortInMergeRecur(array, startIndex, midIndex); 
-            sortInMergeRecur(array , midIndex+1, endIndex); 
-
-            oldMerge(array, startIndex, midIndex, endIndex); 
-        } 
-    } 
-    static void oldMerge(double array[ ], int startIndex, int midIndex, int endIndex) 
-    { 
-        int NLeft = midIndex - startIndex + 1; 
-        int NRight = endIndex - midIndex; 
-        double L[ ] = new double [NLeft]; 
-        double R[ ] = new double [NRight]; 
-
-        for (int i=0; i<NLeft; ++i) 
-        	L[ i ] = array[ startIndex + i ] ;
-        for (int j=0; j<NRight; ++j) 
-        	R[ j ] = array[ midIndex + 1+ j ] ; 
-
-        
-        int i = 0, j = 0, k = startIndex; 
-        
-        //sort the 2 arrays into 1
-        while (i < NLeft && j < NRight) 
-        { 
-            if (L[i] <= R[j]) 
-            { 
-                array[k] = L[i]; 
-                i++; 
-                k++; 
-            } else
-            { 
-                array[k] = R[j]; 
-                j++; 
-                k++; 
-            } 
-        } 
-  
-        while (i < NLeft) //empty left array
-        { 
-            array[k] = L[i]; 
-            i++; 
-            k++; 
-        } 
-        while (j < NRight) //empty right array
-        { 
-            array[k] = R[j]; 
-            j++; 
-            k++; 
-        } 
-    } 
-
+    	for( int k = startIndex; k <= endIndex; k++) aux[k] = array[k];
+	    
+    	int i = startIndex, j = midIndex + 1;
+	    for (int k = startIndex; k  <= endIndex;  k++) 
+	    {
+			if			( i > midIndex) 				array[k] = aux[ j++ ];
+			else if ( j > endIndex) 				array[k] = aux[ i++ ];
+			else if	( aux[j] <= aux[i]) 	array[k] = aux[ j++ ];
+			else 							 				array[k] = aux[ i++ ];
+		}
+    }
+    static void sort(double array[ ], double aux[], int startIndex, int endIndex)
+    {
+    	if ( endIndex <= startIndex) return;
+    	int mid = startIndex + (endIndex - startIndex) / 2;
+    	sort ( array, aux, startIndex, mid);
+    	sort ( array, aux, mid + 1, endIndex);
+    	merge(array, aux, startIndex, mid, endIndex);
+    }
+    
 //---- My Methods ----------------------------------------------------------------------------------------
     public static void printArray(double a[])
     {
@@ -272,7 +229,7 @@
     	testSelection();
     	testQuick();
     	testMergeIter();
-    	//testMergeRecur();
+    	testMergeRecur();
     }
 
  }//end class
